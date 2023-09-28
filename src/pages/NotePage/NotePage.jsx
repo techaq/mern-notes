@@ -1,6 +1,6 @@
 import { checkToken } from "../../utilities/users-service";
 
-function OrderHistoryPage() {
+function NotePage() {
   const handleCheckToken = async () => {
     try {
       const expDate = await checkToken();
@@ -12,10 +12,10 @@ function OrderHistoryPage() {
 
   return (
     <div>
-      <h1> Order History Page </h1>
+      <h1> Note Page </h1>
       <button onClick={handleCheckToken}> Check Log In Expiration</button>
     </div>
   );
 }
 
-export default OrderHistoryPage;
+export default NotePage;
