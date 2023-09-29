@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
     res.status(201).json(savedNote);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Failed to create a new note" });
   }
 });
 
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
     res.json(notes);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Failed to retrieve notes" });
   }
 });
 
@@ -36,7 +36,10 @@ router.get("/:id", async (req, res) => {
     res.json(note);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    if (err.name === "CastError") {
+      return res.status(400).json({ error: "Invalid note ID" });
+    }
+    res.status(500).json({ error: "Failed to retrieve the note" });
   }
 });
 
@@ -52,7 +55,7 @@ router.put("/:id", async (req, res) => {
     res.json(updatedNote);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Failed to update the note" });
   }
 });
 
@@ -66,7 +69,7 @@ router.delete("/:id", async (req, res) => {
     res.json(deletedNote);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Failed to delete the note" });
   }
 });
 

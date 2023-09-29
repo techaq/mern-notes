@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom"; // Import Navigate for redirection
 import AuthPage from "../AuthPage/AuthPage.jsx";
-import NavBar from "../../components/NavBar/NavBar";
+import NavBar from "../../components/NavBar/NavBar.jsx";
 import DashboardPage from "../DashboardPage/DashboardPage.jsx"; // Import the Dashboard component
 import NoteViewPage from "../NoteViewPage/NoteViewPage.jsx"; // Import the NoteViewPage component
 import { getUser } from "../../utilities/users-service";
