@@ -33,6 +33,10 @@ const userRouter = require("./routes/api/users.cjs");
 // If the request starts with /api/users/ it directs the request to the userRouter (ln. 28)
 app.use("/api/users", userRouter);
 
+// Note API routes
+const noteRouter = require("./routes/api/notes.cjs"); // Import the note router
+app.use("/api/notes", noteRouter); // Use the note router for all routes starting with /api/notes
+
 // The following "catch all" route (note the *) is necessary
 // to return the index.html on all non-AJAX requests
 // Send the built and compiled React code to the browser

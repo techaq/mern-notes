@@ -1,14 +1,15 @@
 import "./App.css";
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import NewOrderPage from "../NewOrderPage/NewOrderPage.jsx";
-import OrderHistoryPage from "../OrderHistoryPage/OrderHistoryPage.jsx";
+import { useState, useEffect } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom"; // Import Navigate for redirection
 import AuthPage from "../AuthPage/AuthPage.jsx";
 import NavBar from "../../components/NavBar/NavBar";
+import DashboardPage from "../DashboardPage/DashboardPage.jsx"; // Import the Dashboard component
+import NoteViewPage from "../NoteViewPage/NoteViewPage.jsx"; // Import the NoteViewPage component
 import { getUser } from "../../utilities/users-service";
 
 function App() {
   const [user, setUser] = useState(getUser());
+  const navigate = useNavigate();
 
   return (
     <main className="App">
@@ -17,12 +18,18 @@ function App() {
           {/* NavBar and Routes are only available when the user is logged in */}
           <NavBar user={user} setUser={setUser} />
           <Routes>
-            <Route path="/orders/new" element={<NewOrderPage />} />
-            <Route path="/orders" element={<OrderHistoryPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/note/:id" element={<NoteViewPage />} />
+            <Route path="/*" element={<Navigate to="/dashboard" />} />{" "}
+            {/* Redirect unmatched routes to the dashboard */}
           </Routes>
         </>
       ) : (
-        <AuthPage setUser={setUser} />
+        <Routes>
+          <Route path="auth/*" element={<AuthPage setUser={setUser} />} />
+          <Route path="*" element={<Navigate to="/auth/login" />} />{" "}
+          {/* Redirect unauthenticated users to the login page */}
+        </Routes>
       )}
     </main>
   );

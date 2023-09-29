@@ -1,3 +1,4 @@
+import React from "react";
 import SignUpForm from "../../components/SignUpForm/SignUpForm.jsx";
 import LoginForm from "../../components/LoginForm/LoginForm.jsx";
 
