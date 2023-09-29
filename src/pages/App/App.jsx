@@ -16,9 +16,12 @@ function App() {
       {user ? (
         <>
           {/* NavBar and Routes are only available when the user is logged in */}
-          <NavBar user={user} setUser={setUser} />
+          {/* <NavBar user={user} setUser={setUser} /> */}
           <Routes>
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route
+              path="/dashboard"
+              element={<DashboardPage user={user} setUser={setUser} />}
+            />
             <Route path="/note/:id" element={<NoteViewPage />} />
             <Route path="/*" element={<Navigate to="/dashboard" />} />{" "}
             {/* Redirect unmatched routes to the dashboard */}

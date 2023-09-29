@@ -11,11 +11,11 @@ module.exports = {
 
 async function create(req, res) {
   try {
-    // Creates a new note and associate it with the authenticated user
+    // Create a new note and associate it with the authenticated user
     const newNote = await Note.create({
       title: req.body.title,
       content: req.body.content,
-      author: req.user._id,
+      user: req.user._id, // Assuming you have user authentication middleware that sets req.user
     });
 
     res.status(201).json(newNote);

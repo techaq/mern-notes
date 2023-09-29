@@ -1,13 +1,35 @@
 // NoteForm.jsx
 import React, { useState } from "react";
+import axios from "axios";
 
-function NoteForm() {
+function NoteForm({ onNoteAdded }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Submit the note to your API or state
+
+    try {
+      // Make an HTTP POST request to create a new note
+      const response = await axios.post("/api/notes", {
+        title,
+        content,
+      });
+
+      // Check if the request was successful
+      if (response.status === 201) {
+        // Clear the form fields
+        setTitle("");
+        setContent("");
+
+        // Optionally, you can call a callback function to refresh the notes list
+        if (onNoteAdded) {
+          onNoteAdded();
+        }
+      }
+    } catch (error) {
+      console.error("Error saving note:", error);
+    }
   };
 
   return (
