@@ -1,3 +1,4 @@
+// server.cjs
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
@@ -9,7 +10,6 @@ require("./config/database.cjs");
 
 const app = express();
 
-// Middleware
 //  logger middleware to log requests
 app.use(logger("dev"));
 // middleware to parse incoming JSON data
@@ -17,29 +17,23 @@ app.use(express.json());
 
 // Configure both serve-favicon & static middleware
 // to serve from the production 'build' folder
-// app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, "build", "favicon.ico")));
 app.use(express.static(path.join(__dirname, "dist")));
 
 // checkToken middleware - sets the req.user and req.esp properties on the request object
 app.use(require("./config/checkToken.cjs"));
 
-// Put API routes here, before the "catch all" route
-app.get("/api/test", (req, res) => {
-  res.send("You just hit a API route");
-});
-
+// API routes
 const userRouter = require("./routes/api/users.cjs");
-//Router setup
-// If the request starts with /api/users/ it directs the request to the userRouter (ln. 28)
+const noteRouter = require("./routes/api/note.cjs");
+
+// Use the userRouter for routes starting with "/api/users"
 app.use("/api/users", userRouter);
 
-// Note API routes
-const noteRouter = require("./routes/api/notes.cjs"); // Import the note router
-app.use("/api/notes", noteRouter); // Use the note router for all routes starting with /api/notes
+// Use the noteRouter for routes starting with "/api/note"
+app.use("/api/note", noteRouter);
 
-// The following "catch all" route (note the *) is necessary
-// to return the index.html on all non-AJAX requests
-// Send the built and compiled React code to the browser
+// Catch-all route to serve your React app's HTML file
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });

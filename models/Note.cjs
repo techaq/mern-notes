@@ -1,3 +1,4 @@
+// models/note.cjs
 const { Schema, model } = require("mongoose");
 
 const noteSchema = new Schema(
@@ -26,7 +27,9 @@ const noteSchema = new Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
   }
 );
 
 module.exports = model("Note", noteSchema);
+// capital n???

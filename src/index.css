@@ -1,153 +1,49 @@
 /* CSS Custom Properties */
 :root {
-  --white: #FFFFFF;
-  --tan-1: #f6fbfb;
-  --tan-2: #dde3e7;
-  --tan-3: #d1dee2;
-  --tan-4: #aed1d3;
-  --blue: #007Ff7;
-  --text-light: #968c84;
-  --text-dark: #615954;
-}
-
-*, *:before, *:after {
-  box-sizing: border-box;
+  --background-light: #FDFDFD;
+  --background-dark: #F4F4F4;
+  --accent-color: #FF6F61; /* Inviting accent color */
+  --text-light: #666666;
+  --text-dark: #333333;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--tan-4);
-  padding: 2vmin;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-light);
+  padding: 20px;
   height: 100vh;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-#root {
-  height: 100%;
-}
-
-.align-ctr {
-  text-align: center;
-}
-
-.align-rt {
-  text-align: right;
-}
-
-.smaller {
-  font-size: smaller;
-}
-
-.flex-ctr-ctr {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.flex-j-end {
-  justify-content: flex-end;
-}
-
-.scroll-y {
-  overflow-y: scroll;
-}
-
+/* Update section-heading background and text color */
 .section-heading {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: var(--tan-1);
-  color: var(--text-dark);
-  border: .1vmin solid var(--tan-3);
-  border-radius: 1vmin;
-  padding: .6vmin;
-  text-align: center;
-  font-size: 2vmin;
+  background-color: var(--accent-color);
+  color: var(--background-light);
 }
 
-.form-container {
-  padding: 3vmin;
-  background-color: var(--tan-1);
-  border: .1vmin solid var(--tan-3);
-  border-radius: 1vmin;
+/* Update button and link styles with the accent color */
+button, a.button {
+  color: var(--background-light);
+  background-color: var(--accent-color);
 }
 
-p.error-message {
-  color: var(--blue);
-  text-align: center;
-}
-
-form {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 1.25vmin;
-  color: var(--text-light);
-}
-
-label {
-  font-size: 2vmin;
-  display: flex;
-  align-items: center;
-}
-
+/* Update input and form styles */
 input {
-  padding: 1vmin;
-  font-size: 2vmin;
-  border: .1vmin solid var(--tan-3);
-  border-radius: .5vmin;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid var(--background-dark);
+  border-radius: 4px;
   color: var(--text-dark);
-  background-image: none !important; /* prevent lastpass */
+  background-color: var(--background-light);
   outline: none;
 }
 
 input:focus {
-  border-color: var(--blue);
+  border-color: var(--accent-color);
 }
 
-button, a.button {
-  margin: 1vmin;
-  padding: 1vmin;
-  color: var(--white);
-  background-color: var(--blue);
-  font-size: 2vmin;
-  font-weight: bold;
-  text-decoration: none;
+/* Update error message style */
+p.error-message {
+  color: var(--accent-color);
   text-align: center;
-  border: .1vmin solid var(--tan-2);
-  border-radius: .5vmin;
-  outline: none;
-  cursor: pointer;
-}
-
-button.btn-sm {
-  font-size: 1.5vmin;
-  padding: .6vmin .8vmin;
-}
-
-button.btn-xs {
-  font-size: 1vmin;
-  padding: .4vmin .5vmin;
-}
-
-button:disabled, form:invalid button[type="submit"] {
-  cursor: not-allowed;
-  background-color: var(--tan-4);
-}
-
-button[type="submit"] {
-  grid-column: span 2;
-  margin: 1vmin 0 0;
 }

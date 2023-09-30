@@ -1,4 +1,5 @@
-const Note = require("../../models/Note.cjs"); // note model
+// controllers/api/note.cjs
+const Note = require("../../models/note.cjs"); // note model
 const User = require("../../models/user.cjs"); // user model
 
 module.exports = {
@@ -12,22 +13,27 @@ module.exports = {
 async function create(req, res) {
   try {
     // Create a new note and associate it with the authenticated user
-    const newNote = await Note.create({
+    const note = await Note.create({
+      user: req.user._id, // associate the note with the logged-in user
       title: req.body.title,
       content: req.body.content,
-      user: req.user._id, // Assuming you have user authentication middleware that sets req.user
     });
 
-    res.status(201).json(newNote);
+    res.status(201).json(note);
   } catch (err) {
-    res.status(400).json({ error: "Failed to create a new note" });
+    res.status(400).json({ error: err.message });
   }
 }
+
+// Save the new note
+await newNote.save();
+
+res.status(201).json(newNote);
 
 async function list(req, res) {
   try {
     // Retrieve a list of notes associated with the authenticated user
-    const notes = await Note.find({ author: req.user._id });
+    const notes = await Note.find({ user: req.user._id });
 
     res.json(notes);
   } catch (err) {
@@ -55,9 +61,9 @@ async function get(req, res) {
 
 async function update(req, res) {
   try {
-    // Update a note by its ID, associated with the authenticated user
+    // Find and update a note by its ID, associated with the authenticated user
     const updatedNote = await Note.findOneAndUpdate(
-      { _id: req.params.id, author: req.user._id },
+      { _id: req.params.id, user: req.user._id },
       { $set: req.body },
       { new: true }
     );
@@ -74,10 +80,10 @@ async function update(req, res) {
 
 async function remove(req, res) {
   try {
-    // Remove a note by its ID, associated with the authenticated user
+    // Find and remove a note by its ID, associated with the authenticated user
     const removedNote = await Note.findOneAndRemove({
       _id: req.params.id,
-      author: req.user._id,
+      user: req.user._id,
     });
 
     if (!removedNote) {

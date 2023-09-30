@@ -6,12 +6,24 @@ const db = require("./config/database.cjs");
 // const User = require('./models/user');
 // const Item = require('./models/item');
 // const Category = require('./models/category');
-// const Order = require('./models/order');
+const Note = require("./models/note.cjs");
 
 // Local variables will come in handy for holding retrieved documents
-let user, item, category, order;
-let users, items, categories, orders;
+let user, note;
+let users, notes;
 
-setTimeout(() => {
-  db.close();
-}, 5000);
+Note.create({
+  user: "6514508ca54406fc7e8c21e1",
+  content: "testing12345",
+  title: "testing12345",
+})
+  .then((note) => {
+    console.log(note);
+  })
+  .finally(() => {
+    db.close();
+  });
+
+// setTimeout(() => {
+//   db.close();
+// }, 5000);

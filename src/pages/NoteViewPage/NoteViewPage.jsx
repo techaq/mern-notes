@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Import useParams to access route parameters
-import { fetchNoteById } from "../../utilities/notes-service"; // Import a function to fetch a note by ID
+import { Link } from "react-router-dom"; // Import useParams to access route parameters
+// import { fetchNoteById } from "../../utilities/notes-service"; // Import a function to fetch a note by ID
 
 function NoteViewPage() {
   const { id } = useParams(); // Get the "id" parameter from the URL
