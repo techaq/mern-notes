@@ -1,26 +1,18 @@
-// NoteList.jsx
-import React from "react";
+import styles from "./NoteList.module.css";
+import NoteListItem from "../NoteListItem/NoteListItem";
 
-function NotesList({ notes, selectedNote }) {
+export default function NoteList({ notes }) {
+  const noteItems = notes.map((note) => {
+    return <NoteListItem key={note._id} note={note} />;
+  });
+
   return (
-    <div>
-      <ul>
-        {notes.map((note) => (
-          <NoteItem
-            key={note.id}
-            note={note}
-            isSelected={note.id === selectedNote?.id}
-          />
-        ))}
-      </ul>
-      {selectedNote && (
-        <div className="note-details">
-          <h2>{selectedNote.title}</h2>
-          <p>{selectedNote.content}</p>
-        </div>
+    <main className={styles.NoteList}>
+      {noteItems.length ? (
+        noteItems
+      ) : (
+        <span className={styles.noNotes}> No Previous Notes </span>
       )}
-    </div>
+    </main>
   );
 }
-
-export default NotesList;

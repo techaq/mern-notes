@@ -1,92 +1,93 @@
-// controllers/api/note.cjs
-const Note = require("../../models/note.cjs"); // note model
-const User = require("../../models/user.cjs"); // user model
+const Note = require("../../models/note.cjs");
 
-module.exports = {
-  create,
-  list,
-  get,
-  update,
-  remove,
-};
-
+// Controller function to create a new note
 async function create(req, res) {
   try {
-    // Create a new note and associate it with the authenticated user
-    const note = await Note.create({
-      user: req.user._id, // associate the note with the logged-in user
-      title: req.body.title,
-      content: req.body.content,
+    const { title, content } = req.body;
+    const userId = req.user._id; // Assuming you have user authentication in place
+
+    const newNote = new Note({
+      title,
+      content,
+      userId,
+      isSaved: true, // Assuming it's a saved note
     });
 
-    res.status(200).json(note);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const savedNote = await newNote.save();
+
+    res.status(201).json(savedNote);
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
   }
 }
 
-async function list(req, res) {
+// Controller function to retrieve all notes
+async function getNotes(req, res) {
   try {
-    // Retrieve a list of notes associated with the authenticated user
-    const notes = await Note.find({ user: req.user._id });
+    const notes = await Note.find({
+      userId: req.user._id, // Filter notes by the user's ID
+    }).sort("-updatedAt");
 
-    res.json(notes);
-  } catch (err) {
-    res.status(400).json({ error: "Failed to retrieve notes" });
+    res.status(200).json(notes);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
   }
 }
 
-async function get(req, res) {
+// Controller function to retrieve a specific note by ID
+async function getNoteById(req, res) {
   try {
-    // Retrieve a single note by its ID, associated with the authenticated user
-    const note = await Note.findOne({
-      _id: req.params.id,
-      author: req.user._id,
-    });
+    const note = await Note.findById(req.params.id);
 
     if (!note) {
-      return res.status(404).json({ error: "Note not found" });
+      return res.status(404).json({ msg: "Note not found" });
     }
 
-    res.json(note);
-  } catch (err) {
-    res.status(400).json({ error: "Failed to retrieve the note" });
+    res.status(200).json(note);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
   }
 }
 
-async function update(req, res) {
+// Controller function to update a specific note by ID
+async function updateNote(req, res) {
   try {
-    // Find and update a note by its ID, associated with the authenticated user
-    const updatedNote = await Note.findOneAndUpdate(
-      { _id: req.params.id, user: req.user._id },
-      { $set: req.body },
+    const { title, content } = req.body;
+    const updatedNote = await Note.findByIdAndUpdate(
+      req.params.id,
+      { title, content },
       { new: true }
     );
 
     if (!updatedNote) {
-      return res.status(404).json({ error: "Note not found" });
+      return res.status(404).json({ msg: "Note not found" });
     }
 
-    res.json(updatedNote);
-  } catch (err) {
-    res.status(400).json({ error: "Failed to update the note" });
+    res.status(200).json(updatedNote);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
   }
 }
 
-async function remove(req, res) {
+// Controller function to delete a specific note by ID
+async function deleteNote(req, res) {
   try {
-    // Find and remove a note by its ID, associated with the authenticated user
-    const removedNote = await Note.findOneAndRemove({
-      _id: req.params.id,
-      user: req.user._id,
-    });
+    const deletedNote = await Note.findByIdAndRemove(req.params.id);
 
-    if (!removedNote) {
-      return res.status(404).json({ error: "Note not found" });
+    if (!deletedNote) {
+      return res.status(404).json({ msg: "Note not found" });
     }
 
-    res.json({ message: "Note deleted successfully" });
-  } catch (err) {
-    res.status(400).json({ error: "Failed to delete the note" });
+    res.status(200).json({ msg: "Note deleted" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
   }
 }
+
+module.exports = {
+  create,
+  getNotes,
+  getNoteById,
+  updateNote,
+  deleteNote,
+};

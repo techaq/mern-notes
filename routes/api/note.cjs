@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Note = require("../../models/note.cjs");
-// const notesCtrl = require("../../controllers/api/note.cjs");
+const noteController = require("../../controllers/api/note.cjs");
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
@@ -12,89 +12,19 @@ function isAuthenticated(req, res, next) {
   res.status(401).json({ error: "Unauthorized" });
 }
 
-// Create a new note (requires authentication)
-router.post("/", isAuthenticated, async (req, res) => {
-  try {
-    // Associate the note with the authenticated user
-    const newNote = new Note({
-      title: req.body.title,
-      content: req.body.content,
-      user: req.user._id,
-    });
+/// POST /api/note (to create a new note)
+router.post("/", noteController.create);
 
-    const savedNote = await newNote.save();
-    res.status(201).json(savedNote);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to create a new note" });
-  }
-});
+// GET /api/note (to retrieve all notes)
+router.get("/", noteController.getNotes);
 
-// Get all notes (requires authentication)
-router.get("/", isAuthenticated, async (req, res) => {
-  console.log("Received GET request for /api/note");
-  try {
-    const notes = await Note.find({ user: req.user._id });
-    res.json(notes);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to retrieve notes" });
-  }
-});
+// GET /api/note/:id (to retrieve a specific note by ID)
+router.get("/:id", noteController.getNoteById);
 
-// Get a single note by ID (requires authentication)
-router.get("/:id", isAuthenticated, async (req, res) => {
-  try {
-    const note = await Note.findOne({
-      _id: req.params.id,
-      user: req.user._id,
-    });
-    if (!note) {
-      return res.status(404).json({ error: "Note not found" });
-    }
-    res.json(note);
-  } catch (err) {
-    console.error(err);
-    if (err.name === "CastError") {
-      return res.status(400).json({ error: "Invalid note ID" });
-    }
-    res.status(500).json({ error: "Failed to retrieve the note" });
-  }
-});
+// PUT /api/note/:id (to update a specific note by ID)
+router.put("/:id", noteController.updateNote);
 
-// Update a note by ID (requires authentication)
-router.put("/:id", isAuthenticated, async (req, res) => {
-  try {
-    const updatedNote = await Note.findOneAndUpdate(
-      { _id: req.params.id, user: req.user._id },
-      req.body,
-      { new: true }
-    );
-    if (!updatedNote) {
-      return res.status(404).json({ error: "Note not found" });
-    }
-    res.json(updatedNote);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to update the note" });
-  }
-});
-
-// Delete a note by ID (requires authentication)
-router.delete("/:id", isAuthenticated, async (req, res) => {
-  try {
-    const deletedNote = await Note.findOneAndRemove({
-      _id: req.params.id,
-      user: req.user._id,
-    });
-    if (!deletedNote) {
-      return res.status(404).json({ error: "Note not found" });
-    }
-    res.json(deletedNote);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to delete the note" });
-  }
-});
+// DELETE /api/note/:id (to delete a specific note by ID)
+router.delete("/:id", noteController.deleteNote);
 
 module.exports = router;
