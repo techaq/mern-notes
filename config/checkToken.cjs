@@ -1,4 +1,5 @@
 // config/checkToken.js
+// Middleware (runs in between the request and response)
 
 const jwt = require("jsonwebtoken");
 
@@ -9,18 +10,15 @@ module.exports = function (req, res, next) {
     // Remove the 'Bearer ' if it was included in the token header
     token = token.replace("Bearer ", "");
     // Check if token is valid and not expired
-    jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+    jwt.verify(token, process.env.SECRET, function (err, decoded) {
       // If valid token, decoded will be the token's entire payload
       // If invalid token, err will be set
-      // if-erorr is the same as below
       if (err) {
         req.user = null;
       } else {
-        //decoded user === the user in the token's payload
+        // decoded user === the user in the token's payload
         req.user = decoded.user;
       }
-      req.user = err ? null : decoded.user;
-
       // If your app cares... (optional)
       req.exp = err ? null : new Date(decoded.exp * 1000);
       return next();

@@ -2,11 +2,11 @@
 const express = require("express");
 const router = express.Router();
 const Note = require("../../models/note.cjs");
-// const notesCtrl = require("../../controllers/api/Note.cjs");
+// const notesCtrl = require("../../controllers/api/note.cjs");
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
-  if (req.isAuthenticated) {
+  if (req.session && req.session.user) {
     return next(); // User is authenticated, proceed to the route handler
   }
   res.status(401).json({ error: "Unauthorized" });

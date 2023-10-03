@@ -1,4 +1,3 @@
-// NoteItem.js
 import React from "react";
 
 function NoteItem({ note, onSelect, onDelete }) {
@@ -6,7 +5,7 @@ function NoteItem({ note, onSelect, onDelete }) {
     <article className="note-item" onClick={onSelect}>
       <h2>{note.title}</h2>
       <p>{note.content}</p>
-      <button onClick={(e) => onDelete(e)}>Delete</button>
+      <button onClick={onDelete}>Delete</button>
     </article>
   );
 }

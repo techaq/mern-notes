@@ -19,16 +19,11 @@ async function create(req, res) {
       content: req.body.content,
     });
 
-    res.status(201).json(note);
+    res.status(200).json(note);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 }
-
-// Save the new note
-await newNote.save();
-
-res.status(201).json(newNote);
 
 async function list(req, res) {
   try {

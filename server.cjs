@@ -4,11 +4,10 @@ const express = require("express");
 const path = require("path");
 const favicon = require("serve-favicon");
 const logger = require("morgan");
+const app = express();
 
 // Connect to database
 require("./config/database.cjs");
-
-const app = express();
 
 //  logger middleware to log requests
 app.use(logger("dev"));
